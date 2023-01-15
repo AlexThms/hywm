@@ -1,6 +1,7 @@
 package com.example.hywm.controller;
 
 import com.example.hywm.common.Result;
+import com.example.hywm.common.WMContonst;
 import com.example.hywm.entity.Category;
 import com.example.hywm.service.CategoryService;
 import com.example.hywm.vo.PageReqVo;
@@ -42,7 +43,7 @@ public class CategoryController {
             log.info("分页查询返回：{}",pageResult);
             return Result.success(pageResult);
         } catch (Exception exception) {
-          return Result.error("500","查询菜品分类失败");
+          return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
         }
     }
 
@@ -53,9 +54,9 @@ public class CategoryController {
             category.setCreateUser(id);
             category.setUpdateUser(id);
             Boolean bool = categoryService.insertCategory(category);
-            return bool ? Result.success("添加成功") : Result.error("500","添加失败");
+            return bool ? Result.success(WMContonst.SuccessEnum.Success_INSERT.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_INSERT.getMsg());
         } catch (Exception exception) {
-            return Result.error("500","添加失败");
+            return Result.error(WMContonst.ErrorEnum.Error_INSERT.getMsg());
         }
     }
 
@@ -65,7 +66,7 @@ public class CategoryController {
             Category category = categoryService.selectCategoryById(id);
             return Result.success(category);
         } catch (Exception exception) {
-            return Result.error("500","查询失败");
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
         }
     }
 
@@ -75,9 +76,9 @@ public class CategoryController {
             String id =(String) req.getSession().getAttribute("Employee");
             category.setUpdateUser(id);
             Boolean bool = categoryService.editCategory(category);
-            return bool ? Result.success("修改成功") : Result.error("500","修改失败");
+            return bool ? Result.success(WMContonst.SuccessEnum.Success_UPDATE.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
         } catch (Exception exception) {
-            return Result.error("500","修改失败");
+            return Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
         }
     }
 
@@ -85,9 +86,9 @@ public class CategoryController {
     public Result deleteCategory(@RequestParam("ids") String id){
         try {
             Boolean bool = categoryService.deleteCategory(id);
-            return bool ? Result.success("删除成功") : Result.error("500","删除失败");
+            return bool ? Result.success(WMContonst.SuccessEnum.Success_DELETE.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_DELETE.getMsg());
         } catch (Exception exception) {
-            return Result.error("500","删除失败");
+            return Result.error(WMContonst.ErrorEnum.Error_DELETE.getMsg());
         }
     }
 }

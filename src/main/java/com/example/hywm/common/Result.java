@@ -23,9 +23,9 @@ public class Result<T> {
         return response;
     }
 
-    public static <T> Result<T> error(String code, String msg){
+    public static <T> Result<T> error( String msg){
         Result<T> response = new Result<>();
-        response.code = code;
+        response.code = "500";
         response.msg = msg;
         return response;
     }

@@ -35,19 +35,19 @@ public class EmployeeController {
             password = DigestUtils.md5DigestAsHex(password.getBytes());
             Employee em = employeeService.login(employee);
             if(em == null){
-                return Result.error(WMContonst.ErrorEnum.Error_LOGIN_01.getKey(),WMContonst.ErrorEnum.Error_LOGIN_01.getMsg());
+                return Result.error(WMContonst.ErrorEnum.Error_LOGIN_01.getMsg());
             }
             if(!em.getPassword().equals(password)){
-                return Result.error(WMContonst.ErrorEnum.Error_LOGIN_02.getKey(),WMContonst.ErrorEnum.Error_LOGIN_02.getMsg());
+                return Result.error(WMContonst.ErrorEnum.Error_LOGIN_02.getMsg());
             }
             if(em.getStatus().equals("0")){
-                return Result.error(WMContonst.ErrorEnum.Error_LOGIN_03.getKey(),WMContonst.ErrorEnum.Error_LOGIN_03.getMsg());
+                return Result.error(WMContonst.ErrorEnum.Error_LOGIN_03.getMsg());
             }else {
                 request.getSession().setAttribute("Employee", em.getId());
                 return Result.success(em);
             }
         }catch (Exception exception){
-            return Result.error("500",exception.getMessage());
+            return Result.error(exception.getMessage());
         }
     }
 
@@ -65,9 +65,9 @@ public class EmployeeController {
             employee.setCreateUser(id);
             employee.setUpdateUser(id);
             Boolean bool = employeeService.insertEmployee(employee);
-            return bool ? Result.success("添加成功") : Result.error("500","添加失败");
+            return bool ? Result.success(WMContonst.SuccessEnum.Success_INSERT.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_INSERT.getMsg());
         } catch (Exception exception) {
-            return Result.error("500","添加失败");
+            return Result.error(WMContonst.ErrorEnum.Error_INSERT.getMsg());
         }
     }
 
@@ -79,7 +79,7 @@ public class EmployeeController {
             log.info("分页查询返回：{}",pageResult);
             return Result.success(pageResult);
         } catch (Exception exception) {
-            return Result.error("500","分页查询失败");
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
         }
     }
 
@@ -89,7 +89,7 @@ public class EmployeeController {
             Employee employee = employeeService.selectEmployeeById(id);
             return Result.success(employee);
         } catch (Exception exception) {
-            return Result.error("500","查询失败");
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
         }
     }
 
@@ -99,9 +99,9 @@ public class EmployeeController {
             String id =(String) req.getSession().getAttribute("Employee");
             employee.setUpdateUser(id);
             Boolean bool = employeeService.editEmployee(employee);
-            return bool ? Result.success("修改成功") : Result.error("500","修改信息失败");
+            return bool ? Result.success(WMContonst.SuccessEnum.Success_UPDATE.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
         }catch (Exception exception) {
-            return Result.error("500","修改信息失败");
+            return Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
         }
     }
 

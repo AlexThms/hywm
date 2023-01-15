@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hywm.mapper.DishMapper">
+    <select id="selectAllDish" resultType="dish">
+        select * from dish
+    </select>
+
+    <select id="selectDishById" resultType="dish">
+        select * from dish where id = #{id}
+    </select>
+
+    <insert id="insertDish" parameterType="dish">
+        insert into dish (id,username,category_id,price,code,create_time,update_time,create_user,update_user)
+        VALUES (#{id},#{type},#{name},#{sort},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+
+    <update id="editDish"></update>
+
+    <delete id="deleteDish"></delete>
+</mapper>

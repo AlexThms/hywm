@@ -7,13 +7,13 @@ import com.example.hywm.vo.PageResult;
 
 
 public interface EmployeeService {
-    public Employee login(Employee employee) throws Exception;
+    Employee login(Employee employee) throws Exception;
 
-    public Boolean insertEmployee(Employee employee) throws Exception;
+    Boolean insertEmployee(Employee employee) throws Exception;
 
-    public PageResult selectEmployeePage(PageReqVo pageReqVo) throws Exception;
+    PageResult selectEmployeePage(PageReqVo pageReqVo) throws Exception;
 
-    public Employee selectEmployeeById(String id) throws Exception;
+    Employee selectEmployeeById(String id) throws Exception;
 
-    public Boolean editEmployee(Employee employee) throws Exception;
+    Boolean editEmployee(Employee employee) throws Exception;
 }

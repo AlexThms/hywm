@@ -11,13 +11,13 @@ import com.example.hywm.vo.PageResult;
  * @Date 2023/1/15 15:37
  **/
 public interface CategoryService {
-    public PageResult selectCategoryPage(PageReqVo pageReqVo) throws Exception;
+    PageResult selectCategoryPage(PageReqVo pageReqVo) throws Exception;
 
-    public Category selectCategoryById(String id) throws Exception;
+    Category selectCategoryById(String id) throws Exception;
 
-    public Boolean insertCategory(Category category) throws Exception;
+    Boolean insertCategory(Category category) throws Exception;
 
-    public Boolean editCategory(Category category) throws Exception;
+    Boolean editCategory(Category category) throws Exception;
 
-    public Boolean deleteCategory(String id) throws Exception;
+    Boolean deleteCategory(String id) throws Exception;
 }
