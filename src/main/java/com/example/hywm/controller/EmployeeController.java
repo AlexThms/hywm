@@ -5,12 +5,19 @@ import com.example.hywm.common.WMContonst;
 import com.example.hywm.entity.Employee;
 import com.example.hywm.service.EmployeeService;
 import com.example.hywm.common.Result;
-import com.example.hywm.vo.EmployeePageReqVo;
+import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,18 +64,18 @@ public class EmployeeController {
             String id =(String) req.getSession().getAttribute("Employee");
             employee.setCreateUser(id);
             employee.setUpdateUser(id);
-            employeeService.insertEmployee(employee);
-            return Result.success("添加成功");
+            Boolean bool = employeeService.insertEmployee(employee);
+            return bool ? Result.success("添加成功") : Result.error("500","添加失败");
         } catch (Exception exception) {
-            return Result.error("500","员工已存在，添加失败");
+            return Result.error("500","添加失败");
         }
     }
 
     @GetMapping("/page")
-    public Result queryEmployeePage(EmployeePageReqVo employeePageReqVo){
+    public Result queryEmployeePage(PageReqVo pageReqVo){
         try {
-            log.info("当前页：{}，页大小；{} name：{}", employeePageReqVo.getPage(), employeePageReqVo.getPageSize(), employeePageReqVo.getName());
-            PageResult pageResult = employeeService.selectEmployeePage(employeePageReqVo);
+            log.info("当前页：{}，页大小；{} name：{}", pageReqVo.getPage(), pageReqVo.getPageSize(), pageReqVo.getName());
+            PageResult pageResult = employeeService.selectEmployeePage(pageReqVo);
             log.info("分页查询返回：{}",pageResult);
             return Result.success(pageResult);
         } catch (Exception exception) {
@@ -91,8 +98,8 @@ public class EmployeeController {
         try{
             String id =(String) req.getSession().getAttribute("Employee");
             employee.setUpdateUser(id);
-            employeeService.editEmployee(employee);
-            return Result.success("修改成功");
+            Boolean bool = employeeService.editEmployee(employee);
+            return bool ? Result.success("修改成功") : Result.error("500","修改信息失败");
         }catch (Exception exception) {
             return Result.error("500","修改信息失败");
         }

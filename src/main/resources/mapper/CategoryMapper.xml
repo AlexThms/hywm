@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hywm.mapper.CategoryMapper">
+
+    <select id="selectAllCategory" resultType="category">
+        select id,type,NAME,sort,update_time as updateTime from category
+    </select>
+
+    <select id="selectCategoryById" resultType="category">
+        select id,type,NAME,sort from category where id = #{id}
+    </select>
+
+    <insert id="insertCategory" parameterType="category">
+        insert into category (id,type,NAME,sort,create_time,update_time,create_user,update_user)
+        VALUES (#{id},#{type},#{name},#{sort},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+
+    <update id="editCategory" parameterType="category">
+        update category set update_user = #{updateUser},update_time = #{updateTime},sort = #{sort},name = #{name}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCategory" parameterType="String">
+        delete from category where id = #{id}
+    </delete>
+</mapper>
