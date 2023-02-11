@@ -47,4 +47,11 @@ public interface CategoryMapper {
      * @return
      */
     Integer deleteCategory(String id);
+
+    /**
+     * 查询通过类型
+     *
+     * @return
+     */
+    List<Category> selectAllCategoryByType(String type);
 }

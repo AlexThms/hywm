@@ -1,6 +1,7 @@
 package com.example.hywm.common;
 
 import com.example.hywm.vo.PageResult;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
 public class PageUtils {
@@ -9,12 +10,12 @@ public class PageUtils {
      * @param pageInfo
      * @return
      */
-    public static PageResult getPageResult(PageInfo<?> pageInfo) {
+    public static PageResult getPageResult(PageInfo<?> pageInfo, Page page) {
         PageResult pageResult = new PageResult();
         pageResult.setPageNum(pageInfo.getPageNum());
         pageResult.setPageSize(pageInfo.getPageSize());
-        pageResult.setTotal(pageInfo.getTotal());
-        pageResult.setPages(pageInfo.getPages());
+        pageResult.setTotal(page.getTotal());
+        pageResult.setPages(page.getPages());
         pageResult.setRecords(pageInfo.getList());
         return pageResult;
     }

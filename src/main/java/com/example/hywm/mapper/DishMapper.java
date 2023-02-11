@@ -1,6 +1,8 @@
 package com.example.hywm.mapper;
 
+import com.example.hywm.dto.DishDto;
 import com.example.hywm.entity.Dish;
+import com.example.hywm.entity.DishFlavor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,13 +16,27 @@ import java.util.List;
 @Repository
 public interface DishMapper {
 
-    List<Dish> selectAllDish();
+    List<DishDto> selectAllDish();
 
-    Dish selectDishById();
+    List<DishDto> selectDishLikeName(String name);
 
-    Integer insertDish();
+    Dish selectDishById(String id);
 
-    Integer editDish();
+    List<DishFlavor> selectDishFlavor(String id);
 
-    Integer deleteDish();
+    Integer insertDish(DishDto dishDto);
+
+    Integer insertDishFlavor(List<DishFlavor> dishFlavor);
+
+    Integer editDish(DishDto dishDto);
+
+    Integer editDishFlavor(List<DishFlavor> dishFlavor);
+
+    Integer editDishStatusQS(List<String> id);
+
+    Integer editDishStatusTS(List<String> id);
+
+    Integer deleteDish(List<String> id);
+
+    Integer deleteDishFlavor(List<String> id);
 }

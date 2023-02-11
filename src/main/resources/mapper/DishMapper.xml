@@ -3,20 +3,72 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.hywm.mapper.DishMapper">
-    <select id="selectAllDish" resultType="dish">
-        select * from dish
+
+    <select id="selectAllDish" resultType="com.example.hywm.dto.DishDto">
+        select d.id AS id,d.name AS name,d.price AS price,d.code AS code,d.image AS image,d.description AS description,d.status AS status,d.update_time AS updateTime,c.name AS categoryName from dish d,category c where d.category_id = c.id
+    </select>
+
+    <select id="selectDishLikeName" resultType="com.example.hywm.dto.DishDto">
+        select d.id AS id,d.name AS name,d.price AS price,d.code AS code,d.image AS image,d.description AS description,d.status AS status,d.update_time AS updateTime,c.name AS categoryName from dish d,category c where d.name like #{name} and d.category_id = c.id
     </select>
 
     <select id="selectDishById" resultType="dish">
-        select * from dish where id = #{id}
+        select id,name,image,price,description,category_id AS categoryId from dish  where id = #{id}
+    </select>
+
+    <select id="selectDishFlavor" resultType="dishFlavor">
+        select * from dish_flavor where dish_id = #{id}
     </select>
 
     <insert id="insertDish" parameterType="dish">
-        insert into dish (id,username,category_id,price,code,create_time,update_time,create_user,update_user)
-        VALUES (#{id},#{type},#{name},#{sort},#{createTime},#{updateTime},#{createUser},#{updateUser})
+        insert into dish (id,name,category_id,price,code,image,status,sort,create_time,update_time,create_user,update_user)
+        VALUES (#{id},#{name},#{categoryId},#{price},#{code},#{image},#{status},#{sort},#{createTime},#{updateTime},#{createUser},#{updateUser})
     </insert>
 
-    <update id="editDish"></update>
+    <insert id="insertDishFlavor" parameterType="list">
+        insert into dish_flavor (id,dish_id,name,value,create_time,update_time,create_user,update_user) values
+        <foreach collection="list" item="flavor" index="index" separator=",">
+            (#{flavor.id},#{flavor.dishId},#{flavor.name},#{flavor.value},#{flavor.createTime},#{flavor.updateTime},#{flavor.createUser},#{flavor.updateUser})
+        </foreach>
+    </insert>
 
-    <delete id="deleteDish"></delete>
+    <update id="editDish" parameterType="dish">
+        update dish set category_id = #{categoryId},update_user = #{updateUser},update_time = #{updateTime},name = #{name},price = #{price},image = #{image},description = #{description}
+        where id = #{id}
+    </update>
+
+    <update id="editDishFlavor" parameterType="list">
+        <foreach collection="list" item="item" index="index" separator=";">
+        update dish_flavor set update_user = #{item.updateUser},update_time = #{item.updateTime},name = #{item.name},value=#{item.value}
+        where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="editDishStatusQS" >
+        update dish set status = '1' where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+        #{id}
+        </foreach>
+    </update>
+
+    <update id="editDishStatusTS" >
+        update dish set status = '0' where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteDish" parameterType="String">
+        delete from dish where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteDishFlavor" parameterType="String">
+        delete from dish_flavor where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

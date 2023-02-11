@@ -6,6 +6,7 @@ import com.example.hywm.mapper.EmployeeMapper;
 import com.example.hywm.service.EmployeeService;
 import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -46,16 +47,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         List employeeList = new ArrayList<>();
         int page = pageReqVo.getPage();
         int pageSize = pageReqVo.getPageSize();
-        PageHelper.startPage(page,pageSize);
+        Page<Object> pageHelp = PageHelper.startPage(page, pageSize);
         if(StringUtils.isNotEmpty(pageReqVo.getName())){
             String name = "%" + pageReqVo.getName() + "%";
             employeeList = employeeMapper.selectEmployeeLikeName(name);
         }else{
             employeeList = employeeMapper.selectAllEmployee();
-            log.info(employeeList.toString());
         }
         PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
-        PageResult pageResult = PageUtils.getPageResult(pageInfo);
+        PageResult pageResult = PageUtils.getPageResult(pageInfo,pageHelp);
         return pageResult;
     }
 

@@ -4,7 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class WMContonst {
+    /**
+     * 初始密码
+     */
     public static final String PASSWORD ="123456";
+    /**
+     * 启售
+     */
+    public static final String QS = "1";
+    /**
+     * 停售
+     */
+    public static final String TS = "0";
     @Getter
     @AllArgsConstructor
     public enum ErrorEnum{

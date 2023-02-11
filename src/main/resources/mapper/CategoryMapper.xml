@@ -25,4 +25,8 @@
     <delete id="deleteCategory" parameterType="String">
         delete from category where id = #{id}
     </delete>
+
+    <select id="selectAllCategoryByType" resultType="category">
+        select * from category where type = #{type}
+    </select>
 </mapper>

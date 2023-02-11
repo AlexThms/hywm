@@ -6,6 +6,7 @@ import com.example.hywm.mapper.CategoryMapper;
 import com.example.hywm.service.CategoryService;
 import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
     public PageResult selectCategoryPage(PageReqVo pageReqVo) throws Exception{
         int page = pageReqVo.getPage();
         int pageSize = pageReqVo.getPageSize();
-        PageHelper.startPage(page,pageSize);
+        Page<Object> pageHelp = PageHelper.startPage(page, pageSize);
         List<Category> categoryList = categoryMapper.selectAllCategory();
         List<Category> collect = categoryList.stream().sorted(Comparator.comparing(Category::getSort)).collect(Collectors.toList());
         PageInfo<Category> pageInfo = new PageInfo<>(collect);
-        PageResult pageResult = PageUtils.getPageResult(pageInfo);
+        PageResult pageResult = PageUtils.getPageResult(pageInfo,pageHelp);
         return pageResult;
     }
 
@@ -76,6 +77,12 @@ public class CategoryServiceImpl implements CategoryService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Category> selectAllCategoryByType(String type) throws Exception {
+        List<Category> categoryList = categoryMapper.selectAllCategoryByType(type);
+        return categoryList;
     }
 
 }

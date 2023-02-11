@@ -13,5 +13,8 @@ mybatis:
   mapperLocations: classpath:mapper/*.xml
   config-location: classpath:mybatis-config.xml
   typeAliasesPackage: com.example.hywm.entity
+logging:
+  level:
+    com.example.hywm.mapper : DEBUG
 hywm:
-  path:D:\javaproject\hywm\img\
+  path: D:\javaproject\hywm\img\

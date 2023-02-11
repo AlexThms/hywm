@@ -4,6 +4,8 @@ import com.example.hywm.entity.Category;
 import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
 
+import java.util.List;
+
 /**
  * Description todo
  * Author lihao
@@ -20,4 +22,6 @@ public interface CategoryService {
     Boolean editCategory(Category category) throws Exception;
 
     Boolean deleteCategory(String id) throws Exception;
+
+    List<Category> selectAllCategoryByType(String type) throws Exception;
 }

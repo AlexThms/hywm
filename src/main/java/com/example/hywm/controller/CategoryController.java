@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
- * Description todo
+ * Description 分类管理
  * Author lihao
  *
  * @Date 2023/1/15 15:35
@@ -89,6 +90,16 @@ public class CategoryController {
             return bool ? Result.success(WMContonst.SuccessEnum.Success_DELETE.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_DELETE.getMsg());
         } catch (Exception exception) {
             return Result.error(WMContonst.ErrorEnum.Error_DELETE.getMsg());
+        }
+    }
+
+    @GetMapping("/list")
+    public Result queryCategoryList(@RequestParam("type") String type){
+        try {
+            List<Category> categoryList = categoryService.selectAllCategoryByType(type);
+            return Result.success(categoryList);
+        } catch (Exception exception) {
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
         }
     }
 }
