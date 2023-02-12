@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
@@ -62,6 +63,7 @@ public class DishServiceImpl implements DishService {
         return pageResult;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insertDish(DishDto dishDto) throws Exception {
         String dishUuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -87,6 +89,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean editDish(DishDto dishDto) throws Exception {
         List<DishFlavor> addList = new ArrayList<>();
         List<DishFlavor> editList = new ArrayList<>();
@@ -107,10 +110,16 @@ public class DishServiceImpl implements DishService {
                 editList.add(flavor);
             }
         }
-        Integer editNumber = dishMapper.editDishFlavor(editList);
-        Integer addNumber = dishMapper.insertDishFlavor(addList);
-        Integer integer = dishMapper.editDish(dishDto);
+        Integer editNumber = 0;
+        Integer addNumber = 0;
         Integer deleteNumber = 0;
+        if(!CollectionUtils.isEmpty(editList)){
+            editNumber = dishMapper.editDishFlavor(editList);
+        }
+        if(!CollectionUtils.isEmpty(addList)){
+            addNumber = dishMapper.insertDishFlavor(addList);
+        }
+        Integer integer = dishMapper.editDish(dishDto);
         if(!CollectionUtils.isEmpty(deleteList)){
             List<String> stringList = deleteList.stream().map(DishFlavor::getId).collect(Collectors.toList());
             deleteNumber = dishMapper.deleteDishFlavor(stringList);
@@ -123,9 +132,11 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean deleteDish(String id) throws Exception {
         List<String> stringList = Arrays.asList(id.split(","));
         Integer integer = dishMapper.deleteDish(stringList);
+        dishMapper.deleteByDishId(stringList);
         if (integer != stringList.size()){
             return false;
         }
@@ -157,6 +168,12 @@ public class DishServiceImpl implements DishService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Dish> selectDishByCategoryId(String id) throws Exception {
+        List<Dish> dishList = dishMapper.selectDishByCategoryId(id);
+        return dishList;
     }
 
 }

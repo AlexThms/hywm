@@ -10,29 +10,32 @@ import java.time.LocalDateTime;
  * Description todo
  * Author lihao
  *
- * @Date 2023/1/15 18:43
+ * @Date 2023/2/12 16:06
  **/
 @Data
-public class Dish implements Serializable {
+public class SetmealDish implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private String id;
 
+    //套餐id
+    private String setmealId;
+
+    //菜品id
+    private String dishId;
+
+    //菜品名称 （冗余字段）
     private String name;
 
-    private String categoryId;
-
+    //菜品原价
     private BigDecimal price;
 
-    private String code;
+    //份数
+    private Integer copies;
 
-    private String image;
-
-    private String description;
-
-    private int sort;
-
-    private String status;
+    //排序
+    private Integer sort;
 
     private LocalDateTime createTime;
 
@@ -42,5 +45,6 @@ public class Dish implements Serializable {
 
     private String updateUser;
 
-    private String isDelete;
+    //是否删除
+    private Integer isDeleted;
 }

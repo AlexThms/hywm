@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee em = employeeMapper.selectEmployByName(employee.getUsername());
         return em;
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insertEmployee(Employee employee) throws Exception{
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         employee.setId(uuid);
@@ -42,7 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return true;
     }
-    
+
+    @Override
     public PageResult selectEmployeePage(PageReqVo pageReqVo) throws Exception{
         List employeeList = new ArrayList<>();
         int page = pageReqVo.getPage();
@@ -59,11 +64,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return pageResult;
     }
 
+    @Override
     public Employee selectEmployeeById(String id) throws Exception{
         Employee employee = employeeMapper.selectEmployById(id);
         return employee;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean editEmployee(Employee employee) throws Exception{
         employee.setUpdateTime(LocalDateTime.now());
         Integer integer = employeeMapper.editEmployeeById(employee);

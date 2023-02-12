@@ -24,6 +24,8 @@ public interface DishMapper {
 
     List<DishFlavor> selectDishFlavor(String id);
 
+    List<Dish> selectDishByCategoryId(String id);
+
     Integer insertDish(DishDto dishDto);
 
     Integer insertDishFlavor(List<DishFlavor> dishFlavor);
@@ -39,4 +41,6 @@ public interface DishMapper {
     Integer deleteDish(List<String> id);
 
     Integer deleteDishFlavor(List<String> id);
+
+    Integer deleteByDishId(List<String> id);
 }

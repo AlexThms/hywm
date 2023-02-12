@@ -105,5 +105,13 @@ public class DishController {
         }
     }
 
-
+    @GetMapping("/list")
+    public Result queryDishByCategoryId(String categoryId){
+        try {
+            List<Dish> dishList = dishService.selectDishByCategoryId(categoryId);
+            return Result.success(dishList);
+        } catch (Exception exception) {
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
+        }
+    }
 }

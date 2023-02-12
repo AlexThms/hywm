@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -48,6 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insertCategory(Category category) throws Exception {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         category.setId(uuid);
@@ -61,6 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean editCategory(Category category) throws Exception {
         category.setUpdateTime(LocalDateTime.now());
         Integer integer = categoryMapper.editCategory(category);

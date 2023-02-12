@@ -235,10 +235,10 @@
                 return false
               }
               params.ids = this.checkList.join(',')
-              params.status = row
+              params.status = row.status
             } else {
               params.ids = row.id
-              params.status = row.status ? '0' : '1'
+              params.status = row.status
             }
             this.$confirm('确认更改该套餐状态?', '提示', {
               'confirmButtonText': '确定',

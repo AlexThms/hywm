@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hywm.mapper.SetmealMapper">
+    <insert id="insetSetmeal" parameterType="setmeal">
+        insert into setmeal (id,name,category_id,price,code,image,status,description,create_time,update_time,create_user,update_user)
+        VALUES (#{id},#{name},#{categoryId},#{price},#{code},#{image},#{status},#{description},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+
+    <insert id="insetSetmealDish" parameterType="list">
+        insert into setmeal_dish (id,name,setmeal_id,dish_id,price,copies,create_time,update_time,create_user,update_user) VALUES
+        <foreach collection="list" item="setmealDish" separator=",">
+            (#{setmealDish.id},#{setmealDish.name},#{setmealDish.setmealId},#{setmealDish.dishId},#{setmealDish.price},#{setmealDish.copies},#{setmealDish.createTime},#{setmealDish.updateTime},#{setmealDish.createUser},#{setmealDish.updateUser})
+        </foreach>
+    </insert>
+
+    <select id="selectAllSetmeal" resultType="com.example.hywm.dto.SetmealDto">
+        select s.id,s.name ,s.price,s.status,s.description ,s.image ,s.update_time AS updateTime,c.name AS categoryName from setmeal s,category c where s.category_id = c.id
+    </select>
+
+    <select id="selectSetmealById" resultType="com.example.hywm.dto.SetmealDto">
+        select s.category_id As categoryId,s.id,s.name,s.price,s.status,s.description,s.image,c.name AS categoryName from setmeal s,category c where s.id = #{id} and s.category_id = c.id
+    </select>
+
+    <select id="selectSetmealDishById" resultType="setmealDish">
+        select id,name,setmeal_id AS setmealId,dish_id AS dishId,price,copies from setmeal_dish where setmeal_id = #{id}
+    </select>
+
+    <select id="SelectSetmealLikeName" resultType="com.example.hywm.dto.SetmealDto">
+        select s.id,s.name,s.price,s.status,s.description,s.image,s.update_time AS updateTime,c.name AS categoryName from setmeal s,category c where s.name like #{name} and s.category_id = c.id
+    </select>
+
+    <update id="editSetmeal" parameterType="setmeal">
+        update setmeal set category_id = #{categoryId},update_user = #{updateUser},update_time = #{updateTime},name = #{name},price = #{price},image = #{image},description = #{description}
+        where id = #{id}
+    </update>
+
+    <update id="editSetmealDish" parameterType="list">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update setmeal_dish set update_user = #{item.updateUser},update_time = #{item.updateTime},name = #{item.name},copies=#{item.copies},setmeal_id =#{item.setmealId},dish_id=#{item.dishId},price=#{item.price}
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteSetmeal" parameterType="String">
+        delete from Setmeal where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteSetmealDish" parameterType="String">
+        delete from Setmeal_dish where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBySetmealId" parameterType="String">
+        delete from Setmeal_dish where setmeal_id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="editDishStatusQS" parameterType="list">
+        update setmeal set status = '1' where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="editDishStatusTS" >
+        update setmeal set status = '0' where id in
+        <foreach collection="list" item="id" open="("  close=")" index="index" separator=",">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
