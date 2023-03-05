@@ -94,7 +94,7 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
-    public Result queryCategoryList(@RequestParam("type") String type){
+    public Result queryCategoryList(String type){
         try {
             List<Category> categoryList = categoryService.selectAllCategoryByType(type);
             return Result.success(categoryList);

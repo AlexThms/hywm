@@ -27,6 +27,11 @@
     </delete>
 
     <select id="selectAllCategoryByType" resultType="category">
-        select * from category where type = #{type}
+        select * from category
+        <where>
+            <if test="type != null and type != ''">
+            type = #{type}
+            </if>
+        </where>
     </select>
 </mapper>

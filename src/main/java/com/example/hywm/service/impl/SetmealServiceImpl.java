@@ -10,6 +10,7 @@ import com.example.hywm.entity.DishFlavor;
 import com.example.hywm.entity.Setmeal;
 import com.example.hywm.entity.SetmealDish;
 import com.example.hywm.mapper.CategoryMapper;
+import com.example.hywm.mapper.DishMapper;
 import com.example.hywm.mapper.SetmealMapper;
 import com.example.hywm.service.SetmealService;
 import com.example.hywm.vo.PageReqVo;
@@ -45,6 +46,9 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Autowired
     CategoryMapper categoryMapper;
+
+    @Autowired
+    DishMapper dishMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -168,5 +172,27 @@ public class SetmealServiceImpl implements SetmealService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Setmeal> selectSetmealByCategoryId(String id,String status) throws Exception {
+        List<Setmeal> setmealList = setmealMapper.selectSetmealByCategoryId(id);
+        return setmealList;
+    }
+
+    @Override
+    public List<DishDto> selectDishById(String id) throws Exception {
+        List<SetmealDish> setmealDishList = setmealMapper.selectSetmealDishById(id);
+        List<DishDto> dishDtos = setmealDishList.stream().map((setmealDish) -> {
+            DishDto dishDto = new DishDto();
+            dishDto.setCopies(setmealDish.getCopies());
+            //这里是为了把套餐中的菜品的基本信息填充到dto中，比如菜品描述，菜品图片等菜品的基本信息
+            String dishId = setmealDish.getDishId();
+            Dish dish = dishMapper.selectDishById(dishId);
+            //将菜品信息拷贝到dishDto中
+            BeanUtils.copyProperties(dish, dishDto);
+            return dishDto;
+        }).collect(Collectors.toList());
+        return dishDtos;
     }
 }

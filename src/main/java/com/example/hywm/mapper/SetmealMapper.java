@@ -26,6 +26,8 @@ public interface SetmealMapper {
 
     List<SetmealDish> selectSetmealDishById(String id);
 
+    List<Setmeal> selectSetmealByCategoryId(String id);
+
     List<SetmealDto> SelectSetmealLikeName(String name);
 
     Integer editSetmeal(Setmeal setmeal);

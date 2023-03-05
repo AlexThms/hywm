@@ -27,7 +27,7 @@ function setmealListApi(data) {
 //获取购物车内商品的集合
 function cartListApi(data) {
     return $axios({
-        'url': '/shoppingCart/list',
+        'url': '/shoppingCard/list',
         'method': 'get',
         params:{...data}
     })
@@ -36,7 +36,7 @@ function cartListApi(data) {
 //购物车中添加商品
 function  addCartApi(data){
     return $axios({
-        'url': '/shoppingCart/add',
+        'url': '/shoppingCard/add',
         'method': 'post',
         data
       })
@@ -45,7 +45,7 @@ function  addCartApi(data){
 //购物车中修改商品
 function  updateCartApi(data){
     return $axios({
-        'url': '/shoppingCart/sub',
+        'url': '/shoppingCard/sub',
         'method': 'post',
         data
       })
@@ -54,7 +54,7 @@ function  updateCartApi(data){
 //删除购物车的商品
 function clearCartApi() {
     return $axios({
-        'url': '/shoppingCart/clean',
+        'url': '/shoppingCard/clean',
         'method': 'delete',
     })
 }

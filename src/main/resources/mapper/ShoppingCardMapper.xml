@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hywm.mapper.ShoppingCardMapper">
+    <select id="selectShoppingCard" resultType="shoppingCard">
+        select id,name,image,user_id AS userId,dish_id AS dishId,setmeal_id AS setmealId,dish_flavor AS dishFlavor,number,amount from shopping_card
+    </select>
+
+    <select id="selectShoppingCardById" resultType="shoppingCard">
+        select id,name,user_id AS userId,dish_id AS dishId,setmeal_id AS setmealId,dish_flavor AS dishFlavor,number,amount from shopping_card
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectByDishId" resultType="shoppingCard">
+        select id,name,user_id AS userId,dish_id AS dishId,setmeal_id AS setmealId,dish_flavor AS dishFlavor,number,amount from shopping_card
+        where dish_id = #{dishId}
+    </select>
+
+    <select id="selectBySetmealId" resultType="shoppingCard">
+        select id,name,user_id AS userId,dish_id AS dishId,setmeal_id AS setmealId,dish_flavor AS dishFlavor,number,amount from shopping_card
+        where setmeal_id = #{setmealId}
+    </select>
+
+    <insert id="insertShoppingCard" parameterType="shoppingCard">
+        insert into shopping_card (id,name,image,user_id,dish_id,setmeal_id,dish_flavor,number,amount,create_time) values
+            (#{id},#{name},#{image},#{userId},#{dishId},#{setmealId},#{dishFlavor},#{number},#{amount},#{createTime})
+    </insert>
+
+    <update id="editShoppingCard" parameterType="shoppingCard">
+        update shopping_card set number = #{number} where id = #{id}
+    </update>
+
+    <delete id="deleteAllShoppingCard" parameterType="string">
+        delete from shopping_card where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteShoppingCard" parameterType="string">
+        delete from shopping_card where id = #{id}
+    </delete>
+
+</mapper>

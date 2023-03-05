@@ -49,6 +49,7 @@
                             </el-image>
                             <div class="desc">
                                 <div class="name">{{item.name}}</div>
+                                <div class="flavor">&nbsp;&ensp;{{item.dishFlavor}}</div>
                                 <div class="numPrice">
                                     <span class="num">x{{item.number}}</span>
                                     <div class="price">
@@ -57,6 +58,12 @@
                                 </div>
                             </div>
                     </div>
+                </div>
+                <div >
+                    <el-radio-group  v-model="radio1" @change="checkOne" size="medium">
+                        <el-radio-button label="堂食"></el-radio-button>
+                        <el-radio-button label="外卖"></el-radio-button>
+                    </el-radio-group>
                 </div>
                 <div class="note">
                     <div class="title">备注</div>
@@ -109,6 +116,8 @@
                         },
                         finishTime:'',//送达时间
                         cartData:[],
+                        radio1: '堂食',
+                        type:'',
                         note:''//备注信息
                     }
                 },
@@ -137,6 +146,9 @@
                 },
                 mounted(){},
                 methods:{
+                    checkOne(val){
+                        this.type=(val==='堂食') ? '0' : '1';
+                    },
                     goBack(){
                         history.go(-1)
                     },
@@ -149,7 +161,7 @@
                     //获取默认地址
                     async defaultAddress(){
                         const res = await  getDefaultAddressApi()
-                        if(res.code === 1){
+                        if(res.code === '200'){
                            this.address = res.data
                            this.getFinishTime()
                         }else{
@@ -179,7 +191,7 @@
                     //获取购物车数据
                     async getCartData(){
                         const res = await cartListApi({})
-                        if(res.code === 1){
+                        if(res.code === '200'){
                             this.cartData = res.data
                         }else{
                             this.$notify({ type:'warning', message:res.msg});
@@ -189,7 +201,8 @@
                         const params = {
                             remark:this.note,
                             payMethod:1,
-                            addressBookId:this.address.id
+                            addressBookId:this.address.id,
+                            type:this.type
                         }
                         const res = await addOrderApi(params)
                         if(res.code === 1){

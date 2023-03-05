@@ -2,7 +2,11 @@ package com.example.hywm.controller;
 
 import com.example.hywm.common.Result;
 import com.example.hywm.common.WMContonst;
+import com.example.hywm.dto.DishDto;
 import com.example.hywm.dto.SetmealDto;
+import com.example.hywm.entity.Dish;
+import com.example.hywm.entity.Setmeal;
+import com.example.hywm.entity.SetmealDish;
 import com.example.hywm.service.SetmealService;
 import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
@@ -95,6 +99,27 @@ public class SetmealController {
             return bool ? Result.success(WMContonst.SuccessEnum.Success_UPDATE.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
         } catch (Exception exception) {
             return Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
+        }
+    }
+
+    @GetMapping("/list")
+    public Result querySetmealByCategoryId(String categoryId,String status){
+        try {
+            List<Setmeal> dishList = setmealService.selectSetmealByCategoryId(categoryId,status);
+            return Result.success(dishList);
+        } catch (Exception exception) {
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
+        }
+    }
+
+
+    @GetMapping("/dish/{id}")
+    public Result queryDishById(@PathVariable String id){
+        try {
+            List<DishDto> dishDtoList = setmealService.selectDishById(id);
+            return Result.success(dishDtoList);
+        } catch (Exception exception) {
+            return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
         }
     }
 }

@@ -171,9 +171,18 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<Dish> selectDishByCategoryId(String id) throws Exception {
+    public List<DishDto> selectDishByCategoryId(String id) throws Exception {
+        List<DishDto> dishDtoList = new ArrayList<>();
         List<Dish> dishList = dishMapper.selectDishByCategoryId(id);
-        return dishList;
+        for (Dish dish : dishList
+             ) {
+            List<DishFlavor> dishFlavors = dishMapper.selectDishFlavor(dish.getId());
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(dish,dishDto);
+            dishDto.setFlavors(dishFlavors);
+            dishDtoList.add(dishDto);
+        }
+        return dishDtoList;
     }
 
 }

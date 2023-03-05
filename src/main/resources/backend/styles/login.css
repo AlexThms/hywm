@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: #333;
+  background-color: #5a5e66;
 }
 .login-box {
   width: 1000px;
@@ -39,7 +39,7 @@
 }
 .login-form .el-form-item.is-error .el-input__inner {
   border: 0 !important;
-  border-bottom: 1px solid #fd7065 !important;
+  border-bottom: 1px solid #3a8ee6 !important;
   background: #fff !important;
 }
 .login-form .input-icon {
@@ -79,11 +79,11 @@
   font-weight: 500;
   font-size: 14px;
   border: 0;
-  background-color: #ffc200;
+  background-color: #8cc5ff;
 }
 .login-btn:hover,
 .login-btn:focus {
-  /* background: #FFC200; */
+   background: #3a8ee6;
   /* color: #ffffff; */
 }
 .login-form-title {

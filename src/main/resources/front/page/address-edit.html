@@ -133,7 +133,7 @@
                             res = await addAddressApi(this.form)
                         }
                         
-                        if(res.code === 1){
+                        if(res.code === '200'){
                             window.requestAnimationFrame(()=>{
                                 window.location.replace('/front/page/address.html')
                             })

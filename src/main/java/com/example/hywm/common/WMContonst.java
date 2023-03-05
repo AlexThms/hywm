@@ -23,6 +23,8 @@ public class WMContonst {
         Error_LOGIN_01("101","用户不存在,登录失败"),
         Error_LOGIN_02("102","密码错误"),
         Error_LOGIN_03("103","账号已禁用，请联系管理员"),
+        Error_LOGIN_04("104","验证码错误，登录失败"),
+        Error_LOGIN_05("105","登录失败"),
         Error_INSERT("104","添加失败"),
         Error_QUERY("105","查询失败"),
         Error_DELETE("106","删除失败"),
@@ -46,6 +48,7 @@ public class WMContonst {
         Success_INSERT("添加成功"),
         Success_DELETE("删除成功"),
         Success_UPDATE("修改成功"),
+        Success_SEND("发送成功"),
         ;
         private String msg;
 

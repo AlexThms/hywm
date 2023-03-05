@@ -26,6 +26,6 @@ public interface DishService {
 
     Boolean editDishStatus(String status,String id) throws Exception;
 
-    List<Dish> selectDishByCategoryId(String id) throws Exception;
+    List<DishDto> selectDishByCategoryId(String id) throws Exception;
 
 }
