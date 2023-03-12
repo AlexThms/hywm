@@ -1,10 +1,12 @@
 package com.example.hywm.service;
 
 import com.example.hywm.entity.OrderDetail;
+import com.example.hywm.vo.OrderVo;
 import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Description todo
@@ -14,9 +16,15 @@ import java.time.LocalDateTime;
  **/
 public interface OrdersService {
 
+    Boolean insertOrder(OrderVo orderVo,String userId) throws Exception;
+
     PageResult selectOrdersPage(PageReqVo pageReqVo, String number, LocalDateTime beginTime, LocalDateTime endTime) throws Exception;
 
     Boolean editOrderStatus(String status) throws Exception;
 
-    OrderDetail selectOrderDetail(String id) throws Exception;
+    List<OrderDetail> selectOrderDetail(String id) throws Exception;
+
+    String getNumber() throws Exception;
+
+    PageResult selectOrderPage(PageReqVo pageReqVo,String id) throws Exception;
 }

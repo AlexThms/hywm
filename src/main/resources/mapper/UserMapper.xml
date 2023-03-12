@@ -10,4 +10,8 @@
     <insert id="insertUser" parameterType="user">
         insert into user(id,phone) values (#{id},#{phone})
     </insert>
+
+    <select id="selectById" resultType="String">
+        select name from user where id = #{id}
+    </select>
 </mapper>

@@ -30,8 +30,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     ShoppingCardMapper shoppingCardMapper;
 
     @Override
-    public List<ShoppingCard> queryShoppingCard() throws Exception {
-        List<ShoppingCard> shoppingCardList = shoppingCardMapper.selectShoppingCard();
+    public List<ShoppingCard> queryShoppingCard(String id) throws Exception {
+        List<ShoppingCard> shoppingCardList = shoppingCardMapper.selectShoppingCardById(id);
         return shoppingCardList;
     }
 

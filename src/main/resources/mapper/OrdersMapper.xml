@@ -4,8 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.hywm.mapper.OrdersMapper">
 
+    <insert id="insertOrder" parameterType="orders">
+        insert into orders(id,number ,status,user_id,address_book_id,order_time,amount,remark,phone,address,user_name,consignee,type)
+        values (#{id},#{number},#{status},#{userId},#{addressBookId},#{orderTime},#{amount},#{remark},#{phone},#{address},#{userName},#{consignee},#{type})
+    </insert>
+
+    <insert id="insertOrderDetail" parameterType="orderDetail">
+        insert  into order_detail(id,name,image,order_id,dish_id,setmeal_id,dish_flavor,number,amount) values
+            <foreach collection="list" item="order" separator=",">
+                (#{order.id},#{order.name},#{order.image},#{order.orderId},#{order.dishId},#{order.setmealId},#{order.dishFlavor},#{order.number},#{order.amount})
+            </foreach>
+    </insert>
+
     <select id="selectOrdersPage" resultType="Orders">
-        select id,number,user_id AS userId,status,address_book_id AS addressBookId ,pay_method AS payMethod,order_time AS orderTime,checkout_time AS checkTime,amount,phone,address,user_name AS userName,consignee,type from orders
+        select id,number,user_id AS userId,status,address_book_id AS addressBookId ,order_time AS orderTime,amount,phone,address,user_name AS userName,consignee,type from orders
         <where>
             <if test="number != null and number !='' ">
                and number = #{number}
@@ -23,11 +35,21 @@
         order by orderTime
     </select>
 
+    <select id="selectOrdersPageById" resultType="orders">
+        select id,number,user_id AS userId,status,address_book_id AS addressBookId ,order_time AS orderTime,amount,phone,address,user_name AS userName,consignee,type from orders
+        where user_id = #{userId}
+        order by order_time desc
+    </select>
+
     <select id="selectOrderDetail" resultType="orderDetail">
-        select id,name,image,order_id AS orderId,dish_id AS dishId,setmeal_id AS setmealId ,dish_flavor AS dishFlavor,number,amount from order_detial where order_id = #{id}
+        select id,name,image,order_id AS orderId,dish_id AS dishId,setmeal_id AS setmealId ,dish_flavor AS dishFlavor,number,amount from order_detail where order_id = #{id}
     </select>
 
     <update id="editOrderStatus" parameterType="string">
         update orders set status = #{status}
     </update>
+
+    <select id="selectNumber" resultType="int">
+        select count(*) from orders where order_time > #{dayTime} and type = '0'
+    </select>
 </mapper>

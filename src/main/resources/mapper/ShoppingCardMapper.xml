@@ -8,7 +8,7 @@
     </select>
 
     <select id="selectShoppingCardById" resultType="shoppingCard">
-        select id,name,user_id AS userId,dish_id AS dishId,setmeal_id AS setmealId,dish_flavor AS dishFlavor,number,amount from shopping_card
+        select id,name,image,user_id AS userId,dish_id AS dishId,setmeal_id AS setmealId,dish_flavor AS dishFlavor,number,amount from shopping_card
         where user_id = #{userId}
     </select>
 

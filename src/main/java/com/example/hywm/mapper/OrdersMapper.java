@@ -4,6 +4,7 @@ import com.example.hywm.entity.OrderDetail;
 import com.example.hywm.entity.Orders;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -15,9 +16,17 @@ import java.util.List;
 @Repository
 public interface OrdersMapper {
 
+    Integer insertOrder(Orders orders);
+
+    Integer insertOrderDetail(List<OrderDetail> list);
+
     List<Orders> selectOrdersPage();
 
-    OrderDetail selectOrderDetail(String id);
+    List<Orders> selectOrdersPageById(String userId);
+
+    List<OrderDetail> selectOrderDetail(String id);
 
     Integer editOrderStatus(String status);
+
+    int selectNumber(LocalDate dateTime);
 }

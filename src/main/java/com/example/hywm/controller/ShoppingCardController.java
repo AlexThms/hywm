@@ -36,7 +36,8 @@ public class ShoppingCardController {
     @GetMapping("/list")
     public Result queryShoppingCard(HttpServletRequest req) {
         try {
-            List<ShoppingCard> shoppingCardList = shoppingCardService.queryShoppingCard();
+            String id = (String) req.getSession().getAttribute("User");
+            List<ShoppingCard> shoppingCardList = shoppingCardService.queryShoppingCard(id);
             log.info("查询返回：{}", shoppingCardList);
             return Result.success(shoppingCardList);
         } catch (Exception exception) {

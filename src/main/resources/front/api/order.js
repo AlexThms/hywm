@@ -26,9 +26,15 @@ function orderPagingApi(data) {
 
 //再来一单
 function orderAgainApi(data) {
-  return $axios({
-      'url': '/order/again',
-      'method': 'post',
-      data
-  })
+    return $axios({
+        'url': '/order/again',
+        'method': 'post',
+        data
+    })
+}
+function getNumberApi() {
+      return $axios({
+        'url': '/order/get',
+        'method': 'get',
+    })
 }

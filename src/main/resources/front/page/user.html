@@ -53,6 +53,7 @@
                 <div class="dishList">
                     <div v-for="(item,index) in order[0].orderDetails" :key="index" class="item">
                         <span>{{item.name}}</span>
+                        <span>{{item.dishFlavor}}</span>
                         <span>x{{item.number}}</span>
                     </div>
                 </div>
@@ -98,6 +99,7 @@
                         orderDetails:[{
                             name:'',//菜品名称
                             number:undefined,//数量
+                            dishFlavor:''
                         }],//明细
                         amount:undefined,//实收金额
                         sumNum:0,//菜品总数

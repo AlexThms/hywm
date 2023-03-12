@@ -12,7 +12,7 @@ import java.util.List;
  **/
 public interface ShoppingCardService {
 
-    List<ShoppingCard> queryShoppingCard() throws Exception;
+    List<ShoppingCard> queryShoppingCard(String id) throws Exception;
 
     Boolean insertShoppingCard(ShoppingCard shoppingCard) throws Exception;
 

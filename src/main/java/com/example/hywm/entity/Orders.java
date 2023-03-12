@@ -37,14 +37,6 @@ public class Orders implements Serializable {
     private LocalDateTime orderTime;
 
 
-    //结账时间
-    private LocalDateTime checkoutTime;
-
-
-    //支付方式 1微信，2支付宝
-    private Integer payMethod;
-
-
     //实收金额
     private BigDecimal amount;
 
@@ -64,5 +56,5 @@ public class Orders implements Serializable {
     private String consignee;
 
     //订单类型 0:堂食 1:外卖
-    private int type;
+    private String type;
 }

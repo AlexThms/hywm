@@ -117,7 +117,7 @@
                         finishTime:'',//送达时间
                         cartData:[],
                         radio1: '堂食',
-                        type:'',
+                        type:'0',
                         note:''//备注信息
                     }
                 },
@@ -147,7 +147,7 @@
                 mounted(){},
                 methods:{
                     checkOne(val){
-                        this.type=(val==='堂食') ? '0' : '1';
+                        this.type= (val==='堂食') ? '0' : '1';
                     },
                     goBack(){
                         history.go(-1)
@@ -200,15 +200,20 @@
                     async goToPaySuccess(){
                         const params = {
                             remark:this.note,
-                            payMethod:1,
                             addressBookId:this.address.id,
                             type:this.type
                         }
                         const res = await addOrderApi(params)
-                        if(res.code === 1){
-                            window.requestAnimationFrame(()=>{
-                                window.location.replace('/front/page/pay-success.html')
-                            })
+                        if(res.code === '200' ){
+                            if(this.type == '1'){
+                                window.requestAnimationFrame(()=>{
+                                    window.location.replace('/front/page/pay-success-w.html')
+                                })
+                            }else {
+                                window.requestAnimationFrame(()=>{
+                                    window.location.replace('/front/page/pay-success-t.html')
+                                })
+                            }
                         }else{
                             this.$notify({ type:'warning', message:res.msg});
                         }
