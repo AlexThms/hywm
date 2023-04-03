@@ -66,23 +66,26 @@ public class DishServiceImpl implements DishService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insertDish(DishDto dishDto) throws Exception {
+        Integer flavorNum = 0;
         String dishUuid = UUID.randomUUID().toString().replaceAll("-", "");
         List<DishFlavor> flavors = dishDto.getFlavors();
-        for(DishFlavor flavor : flavors){
-            String flavorUuid = UUID.randomUUID().toString().replaceAll("-", "");
-            flavor.setId(flavorUuid);
-            flavor.setDishId(dishUuid);
-            flavor.setCreateUser(dishDto.getCreateUser());
-            flavor.setUpdateUser(dishDto.getUpdateUser());
-            flavor.setCreateTime(LocalDateTime.now());
-            flavor.setUpdateTime(LocalDateTime.now());
+        if(!CollectionUtils.isEmpty(flavors)){
+            for(DishFlavor flavor : flavors){
+                String flavorUuid = UUID.randomUUID().toString().replaceAll("-", "");
+                flavor.setId(flavorUuid);
+                flavor.setDishId(dishUuid);
+                flavor.setCreateUser(dishDto.getCreateUser());
+                flavor.setUpdateUser(dishDto.getUpdateUser());
+                flavor.setCreateTime(LocalDateTime.now());
+                flavor.setUpdateTime(LocalDateTime.now());
+            }
+            flavorNum = dishMapper.insertDishFlavor(flavors);
         }
         dishDto.setId(dishUuid);
         dishDto.setCreateTime(LocalDateTime.now());
         dishDto.setUpdateTime(LocalDateTime.now());
-        Integer flavor = dishMapper.insertDishFlavor(flavors);
         Integer integer = dishMapper.insertDish(dishDto);
-        if (integer != 1 && flavor != flavors.size()){
+        if (integer != 1 && flavorNum != flavors.size()){
             return false;
         }
         return true;
@@ -93,21 +96,29 @@ public class DishServiceImpl implements DishService {
     public Boolean editDish(DishDto dishDto) throws Exception {
         List<DishFlavor> addList = new ArrayList<>();
         List<DishFlavor> editList = new ArrayList<>();
+        List<DishFlavor> deleteList = new ArrayList<>();
         dishDto.setUpdateTime(LocalDateTime.now());
         List<DishFlavor> flavors = dishDto.getFlavors();
         List<DishFlavor> dishFlavorList = dishMapper.selectDishFlavor(dishDto.getId());
-        List<DishFlavor> deleteList = dishFlavorList.stream().filter(obj -> !flavors.contains(obj)).collect(Collectors.toList());
-        for(DishFlavor flavor : flavors){
-            flavor.setUpdateUser(dishDto.getUpdateUser());
-            flavor.setUpdateTime(LocalDateTime.now());
-            flavor.setDishId(dishDto.getId());
-            if(StringUtils.isBlank(flavor.getId())){
-                flavor.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-                flavor.setCreateUser(dishDto.getUpdateUser());
-                flavor.setCreateTime(LocalDateTime.now());
-                addList.add(flavor);
-            }else {
-                editList.add(flavor);
+        if(CollectionUtils.isEmpty(flavors) && !CollectionUtils.isEmpty(dishFlavorList)){
+            deleteList =dishFlavorList;
+        }
+        if(!CollectionUtils.isEmpty(flavors) && !CollectionUtils.isEmpty(dishFlavorList)){
+            deleteList = dishFlavorList.stream().filter(obj -> !flavors.contains(obj)).collect(Collectors.toList());
+        }
+        if(!this.isListEqual(flavors,dishFlavorList)){
+            for(DishFlavor flavor : flavors){
+                flavor.setUpdateUser(dishDto.getUpdateUser());
+                flavor.setUpdateTime(LocalDateTime.now());
+                flavor.setDishId(dishDto.getId());
+                if(StringUtils.isBlank(flavor.getId())){
+                    flavor.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+                    flavor.setCreateUser(dishDto.getUpdateUser());
+                    flavor.setCreateTime(LocalDateTime.now());
+                    addList.add(flavor);
+                }else {
+                    editList.add(flavor);
+                }
             }
         }
         Integer editNumber = 0;
@@ -185,4 +196,30 @@ public class DishServiceImpl implements DishService {
         return dishDtoList;
     }
 
+    public <E>boolean isListEqual(List<E> list1, List<E> list2) {
+        // 两个list引用相同（包括两者都为空指针的情况）
+        if (list1 == list2) {
+            return true;
+        }
+
+        // 两个list都为空（包括空指针、元素个数为0）
+        if ((list1 == null && list2 != null && list2.size() == 0)
+                || (list2 == null && list1 != null && list1.size() == 0)) {
+            return true;
+        }
+
+        // 两个list元素个数不相同
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        // 两个list元素个数已经相同，再比较两者内容
+        // 采用这种可以忽略list中的元素的顺序
+        // 涉及到对象的比较是否相同时，确保实现了equals()方法
+        if (!list1.containsAll(list2)) {
+            return false;
+        }
+
+        return true;
+    }
 }

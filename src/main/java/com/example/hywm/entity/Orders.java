@@ -56,5 +56,5 @@ public class Orders implements Serializable {
     private String consignee;
 
     //订单类型 0:堂食 1:外卖
-    private String type;
+    private int type;
 }

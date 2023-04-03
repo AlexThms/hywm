@@ -37,8 +37,8 @@ public class UserController {
     @PostMapping("/sendMsg")
     public Result sendMsg(@RequestBody User user, HttpSession session) {
         String phone = user.getPhone();
-        String code = ValidateCodeUtils.generateValidateCode4String(4);
-       // SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", phone, code);
+        Integer code = ValidateCodeUtils.generateValidateCode(4);
+//        SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", phone, code.toString());
         log.info("验证码:{}",code);
         session.setAttribute(phone, code);
         return Result.success(WMContonst.SuccessEnum.Success_SEND);
@@ -49,7 +49,7 @@ public class UserController {
         try {
             String phone = (String) map.get("phone");
             String code = (String) map.get("code");
-            String sendCode = (String) session.getAttribute(phone);
+            String sendCode = session.getAttribute(phone).toString();
             if (StringUtils.isNotBlank(sendCode) && code.equals(sendCode)) {
                 User user = userService.selectUser(phone);
                 if (user == null) {

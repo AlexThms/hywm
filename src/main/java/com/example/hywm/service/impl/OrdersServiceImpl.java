@@ -76,6 +76,7 @@ public class OrdersServiceImpl implements OrdersService {
         orders.setOrderTime(LocalDateTime.now());
         orders.setStatus(2);
         orders.setUserId(userId);
+        orders.setType(Integer.parseInt(orderVo.getType()));
         Integer ordersNum = ordersMapper.insertOrder(orders);
         cardList.forEach(obj->{
             OrderDetail detail = new OrderDetail();

@@ -21,7 +21,7 @@
     </select>
 
     <select id="selectDishByCategoryId" resultType="dish">
-        select * from dish where category_id = #{id}
+        select * from dish where category_id = #{id} and status ='1'
     </select>
 
     <insert id="insertDish" parameterType="dish">

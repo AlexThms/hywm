@@ -4,21 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.hywm.mapper.AddressBookMapper">
     <insert id="insertAddress" parameterType="addressBook">
-        insert into address_book(id,user_id,consignee,sex,phone,province_code,province_name,city_code,city_name,
-                                 district_code,district_name,detail,label,create_time,update_time,create_user,update_user)
-        values(#{id},#{userId},#{consignee},#{sex},#{phone},#{provinceCode},#{provinceName},#{cityCode},#{cityName},#{districtCode},
-        #{districtName},#{detail},#{label},#{createTime},#{updateTime},#{createUser},#{updateUser})
+        insert into address_book(id,user_id,consignee,sex,phone,detail,label,create_time,update_time,create_user,update_user)
+        values(#{id},#{userId},#{consignee},#{sex},#{phone},#{detail},#{label},#{createTime},#{updateTime},#{createUser},#{updateUser})
     </insert>
     
     <select id="selectAddress" resultType="addressBook">
-        select id,consignee,sex,phone,province_code as provinceCode,province_name as provinceName,city_code as cityCode,city_name as cityName,
-               district_code as districtCode,district_name as districtName,detail,label,is_default as isDefault from address_book
+        select id,consignee,sex,phone,detail,label,is_default as isDefault from address_book
         where user_id = #{id}
     </select>
 
     <select id="selectAddressOne" resultType="addressBook">
-        select id,consignee,sex,phone,province_code as provinceCode,province_name as provinceName,city_code as cityCode,city_name as cityName,
-               district_code as districtCode,district_name as districtName,detail,label,is_default as isDefault from address_book
+        select id,consignee,sex,phone,detail,label,is_default as isDefault from address_book
         where id = #{id}
     </select>
 

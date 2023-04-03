@@ -1,10 +1,13 @@
 package com.example.hywm.common;
 
+import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 
 /**
@@ -20,9 +23,8 @@ public class SMSUtils {
 	 * @param param 参数
 	 */
 	public static void sendMessage(String signName, String templateCode,String phoneNumbers,String param){
-		DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "", "");
+		DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5t7AK6psVUWLyVPt4chd", "VxhNo9ps6SVvMAQdWeBMvmwaxav7GP");
 		IAcsClient client = new DefaultAcsClient(profile);
-
 		SendSmsRequest request = new SendSmsRequest();
 		request.setSysRegionId("cn-hangzhou");
 		request.setPhoneNumbers(phoneNumbers);
@@ -31,7 +33,7 @@ public class SMSUtils {
 		request.setTemplateParam("{\"code\":\""+param+"\"}");
 		try {
 			SendSmsResponse response = client.getAcsResponse(request);
-			System.out.println("短信发送成功");
+			System.out.println(response.getMessage());
 		}catch (ClientException e) {
 			e.printStackTrace();
 		}

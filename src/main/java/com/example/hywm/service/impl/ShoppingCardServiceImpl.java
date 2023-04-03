@@ -40,13 +40,18 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public Boolean insertShoppingCard(ShoppingCard shoppingCard) throws Exception {
         List<ShoppingCard> cardList = new ArrayList<>();
         ShoppingCard card = null;
+        List<ShoppingCard> collect = new ArrayList<>();
         Integer integer = 0;
         if(StringUtils.isNotEmpty(shoppingCard.getDishId())){
             cardList = shoppingCardMapper.selectByDishId(shoppingCard.getDishId());
             if(!CollectionUtils.isEmpty(cardList)){
-                List<ShoppingCard> collect = cardList.stream().filter(o -> o.getDishFlavor().equals(shoppingCard.getDishFlavor())).collect(Collectors.toList());
-                if(!CollectionUtils.isEmpty(collect)){
-                    card = collect.get(0);
+                if(StringUtils.isNotEmpty(shoppingCard.getDishFlavor())){
+                   collect = cardList.stream().filter(o -> o.getDishFlavor().equals(shoppingCard.getDishFlavor())).collect(Collectors.toList());
+                   if(!CollectionUtils.isEmpty(collect)){
+                        card = collect.get(0);
+                   }
+                }else {
+                   card = cardList.get(0);
                 }
             }
         }else if(StringUtils.isNotEmpty(shoppingCard.getSetmealId())){
@@ -75,8 +80,12 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         Integer integer = 0;
         if(StringUtils.isNotEmpty(shoppingCard.getDishId())){
             cardList = shoppingCardMapper.selectByDishId(shoppingCard.getDishId());
-            List<ShoppingCard> collect = cardList.stream().filter(o -> o.getDishFlavor().equals(shoppingCard.getDishFlavor())).collect(Collectors.toList());
-            cart = collect.get(0);
+            if(StringUtils.isNotEmpty(shoppingCard.getDishFlavor())){
+                List<ShoppingCard> collect = cardList.stream().filter(o -> o.getDishFlavor().equals(shoppingCard.getDishFlavor())).collect(Collectors.toList());
+                cart = collect.get(0);
+            }else {
+                cart = cardList.get(0);
+            }
         }else {
             cart = shoppingCardMapper.selectBySetmealId(shoppingCard.getSetmealId());
         }
