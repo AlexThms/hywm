@@ -189,3 +189,18 @@
 .el-table--border th:first-child .cell {
   padding-left: 12px;
 }
+info-box .item-box .label.item {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  display: flex;
+  justify-content: space-between;
+  height: 20rem;
+  opacity: 1;
+  font-size: 14rem;
+  font-family: PingFangSC, PingFangSC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #666666;
+  line-height: 20rem;
+  letter-spacing: 0;
+}

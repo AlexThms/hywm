@@ -60,8 +60,11 @@ public class AddressBookServiceImpl implements AddressBookService {
     @Override
     public Boolean update(AddressBook addressBook) throws Exception {
         addressBook.setUpdateTime(LocalDateTime.now());
-        addressBookMapper.updateAddress(addressBook);
-        return null;
+        Integer integer = addressBookMapper.updateAddress(addressBook);
+        if(integer !=1 ){
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -24,7 +24,7 @@
                     <i class="el-icon-arrow-left" @click="goBack"></i>菩提阁
                 </div>
             </div>
-            <div class="divContent">
+            <div class="divContent" @click.capture="itemClick(item)">
                 <div class="divAddress">
                     <div @click="toAddressPage">                    
                         <div class="address">{{address.detail}}</div>
@@ -222,6 +222,13 @@
                     imgPathConvert(path){
                         return imgPath(path)
                     },
+                    itemClick(item){
+                        const url = document.referrer
+                        //表示是从地址页面跳转过来的
+                        if(url.includes('address')){
+                            this.defaultAddress()
+                        }
+                    }
                 }
             })
             </script>

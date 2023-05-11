@@ -164,9 +164,9 @@ public class SetmealServiceImpl implements SetmealService {
         Integer integer;
         List<String> stringList = Arrays.asList(id.split(","));
         if(WMContonst.TS.equals(status)){
-            integer = setmealMapper.editDishStatusQS(stringList);
-        }else {
             integer = setmealMapper.editDishStatusTS(stringList);
+        }else {
+            integer = setmealMapper.editDishStatusQS(stringList);
         }
         if (integer != stringList.size()){
             return false;

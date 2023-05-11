@@ -96,15 +96,17 @@ public class DishServiceImpl implements DishService {
     public Boolean editDish(DishDto dishDto) throws Exception {
         List<DishFlavor> addList = new ArrayList<>();
         List<DishFlavor> editList = new ArrayList<>();
-        List<DishFlavor> deleteList = new ArrayList<>();
+        List<String> deleteList = new ArrayList<>();
         dishDto.setUpdateTime(LocalDateTime.now());
         List<DishFlavor> flavors = dishDto.getFlavors();
         List<DishFlavor> dishFlavorList = dishMapper.selectDishFlavor(dishDto.getId());
         if(CollectionUtils.isEmpty(flavors) && !CollectionUtils.isEmpty(dishFlavorList)){
-            deleteList =dishFlavorList;
+            deleteList =dishFlavorList.stream().map(DishFlavor::getId).collect(Collectors.toList());
         }
         if(!CollectionUtils.isEmpty(flavors) && !CollectionUtils.isEmpty(dishFlavorList)){
-            deleteList = dishFlavorList.stream().filter(obj -> !flavors.contains(obj)).collect(Collectors.toList());
+            List<String> collect = dishFlavorList.stream().map(DishFlavor::getId).collect(Collectors.toList());
+            List<String> collect1 = flavors.stream().map(DishFlavor::getId).collect(Collectors.toList());
+            deleteList = collect.stream().filter(obj -> !collect1.contains(obj)).collect(Collectors.toList());
         }
         if(!this.isListEqual(flavors,dishFlavorList)){
             for(DishFlavor flavor : flavors){
@@ -117,7 +119,12 @@ public class DishServiceImpl implements DishService {
                     flavor.setCreateTime(LocalDateTime.now());
                     addList.add(flavor);
                 }else {
-                    editList.add(flavor);
+                    for(DishFlavor obj :dishFlavorList){
+                        if(obj.getId().equals(flavor.getId()) && !obj.getValue().equals(flavor.getValue())){
+                            editList.add(flavor);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -132,8 +139,7 @@ public class DishServiceImpl implements DishService {
         }
         Integer integer = dishMapper.editDish(dishDto);
         if(!CollectionUtils.isEmpty(deleteList)){
-            List<String> stringList = deleteList.stream().map(DishFlavor::getId).collect(Collectors.toList());
-            deleteNumber = dishMapper.deleteDishFlavor(stringList);
+            deleteNumber=dishMapper.deleteDishFlavor(deleteList);
         }
         if (integer != 1 || addNumber != addList.size() || editNumber != editList.size()
             || deleteNumber != deleteList.size()){

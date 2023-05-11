@@ -2,6 +2,7 @@ package com.example.hywm.service.impl;
 
 import com.example.hywm.common.PageUtils;
 import com.example.hywm.common.ValidateCodeUtils;
+import com.example.hywm.dto.OrderDetailDto;
 import com.example.hywm.dto.OrderDto;
 import com.example.hywm.entity.AddressBook;
 import com.example.hywm.entity.OrderDetail;
@@ -25,9 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,19 +99,26 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public PageResult selectOrdersPage(PageReqVo pageReqVo, String number, LocalDateTime beginTime, LocalDateTime endTime) throws Exception {
+    public PageResult selectOrdersPage(PageReqVo pageReqVo, String number, String beginTime, String endTime) throws Exception {
         int page = pageReqVo.getPage();
         int pageSize = pageReqVo.getPageSize();
+        LocalDateTime begin = null;
+        LocalDateTime end = null;
         Page<Object> pageHelper = PageHelper.startPage(page, pageSize);
-        List<Orders> ordersList = ordersMapper.selectOrdersPage();
+        if(StringUtils.isNotEmpty(beginTime)){
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            begin = LocalDateTime.parse(beginTime, fmt);
+            end = LocalDateTime.parse(endTime, fmt);
+        }
+        List<Orders> ordersList = ordersMapper.selectOrdersPage(number,begin,end);
         PageInfo<Orders> pageInfo = new PageInfo<>(ordersList);
         PageResult pageResult = PageUtils.getPageResult(pageInfo, pageHelper);
         return pageResult;
     }
 
     @Override
-    public Boolean editOrderStatus(String status) throws Exception {
-        Integer integer = ordersMapper.editOrderStatus(status);
+    public Boolean editOrderStatus(int status,String id) throws Exception {
+        Integer integer = ordersMapper.editOrderStatus(status,id);
         if(integer != 1){
             return false;
         }
@@ -115,9 +126,16 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<OrderDetail>  selectOrderDetail(String id) throws Exception {
+    public List<OrderDetailDto>  selectOrderDetail(String id) throws Exception {
+        List<OrderDetailDto> details =new ArrayList<>();
         List<OrderDetail> list = ordersMapper.selectOrderDetail(id);
-        return list;
+        list.forEach(obj->{
+            OrderDetailDto dto = new OrderDetailDto();
+            BeanUtils.copyProperties(obj,dto);
+            dto.setNum(obj.getNumber());
+            details.add(dto);
+        });
+        return details;
     }
 
     @Override

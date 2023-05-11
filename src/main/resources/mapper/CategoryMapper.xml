@@ -5,7 +5,7 @@
 <mapper namespace="com.example.hywm.mapper.CategoryMapper">
 
     <select id="selectAllCategory" resultType="category">
-        select id,type,NAME,sort,update_time as updateTime from category
+        select id,type,NAME,sort,update_time as updateTime from category order by sort
     </select>
 
     <select id="selectCategoryById" resultType="category">
@@ -33,5 +33,6 @@
             type = #{type}
             </if>
         </where>
+        order by sort
     </select>
 </mapper>

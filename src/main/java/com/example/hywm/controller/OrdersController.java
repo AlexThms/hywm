@@ -2,8 +2,10 @@ package com.example.hywm.controller;
 
 import com.example.hywm.common.Result;
 import com.example.hywm.common.WMContonst;
+import com.example.hywm.dto.OrderDetailDto;
 import com.example.hywm.entity.OrderDetail;
 import com.example.hywm.service.OrdersService;
+import com.example.hywm.vo.EditOrderReq;
 import com.example.hywm.vo.OrderVo;
 import com.example.hywm.vo.PageReqVo;
 import com.example.hywm.vo.PageResult;
@@ -46,7 +48,7 @@ public class OrdersController {
     }
 
     @GetMapping("/page")
-    public Result queryOrdersPage(PageReqVo pageReqVo, String number, LocalDateTime beginTime,LocalDateTime endTime){
+    public Result queryOrdersPage(PageReqVo pageReqVo, String number, String beginTime,String endTime){
         try {
             PageResult pageResult = ordersService.selectOrdersPage(pageReqVo,number,beginTime,endTime);
             return Result.success(pageResult);
@@ -58,7 +60,7 @@ public class OrdersController {
     @GetMapping("/orderDetail/{id}")
     public Result queryOrderDetail(@PathVariable String id){
         try {
-            List<OrderDetail> orderDetail = ordersService.selectOrderDetail(id);
+            List<OrderDetailDto> orderDetail = ordersService.selectOrderDetail(id);
             return Result.success(orderDetail);
         } catch (Exception exception) {
             return Result.error(WMContonst.ErrorEnum.Error_QUERY.getMsg());
@@ -66,9 +68,9 @@ public class OrdersController {
     }
 
     @PutMapping
-    public Result editOrderStatus(String status){
+    public Result editOrderStatus(@RequestBody EditOrderReq req){
         try {
-            Boolean bool = ordersService.editOrderStatus(status);
+            Boolean bool = ordersService.editOrderStatus(req.getStatus(),req.getId());
             return bool ? Result.success(WMContonst.SuccessEnum.Success_UPDATE.getMsg()) : Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());
         } catch (Exception exception) {
             return Result.error(WMContonst.ErrorEnum.Error_UPDATE.getMsg());

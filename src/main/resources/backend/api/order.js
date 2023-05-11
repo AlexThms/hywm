@@ -10,7 +10,7 @@ const getOrderDetailPage = (params) => {
 // 查看接口
 const queryOrderDetailById = (id) => {
   return $axios({
-    url: `/orderDetail/${id}`,
+    url: `/order/orderDetail/${id}`,
     method: 'get'
   })
 }

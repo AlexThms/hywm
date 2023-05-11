@@ -151,6 +151,14 @@
           <span class="label">订单类型：</span>
           <span class="des">{{ getOrderType(diaForm) }}</span>
         </div>
+        <div class="item-box">
+          <span class="label">详情：</span>
+          <div v-for="(item,index) in orderDetails" :key="index" class="item">
+            <span >{{ item.name }}</span>
+            <span >{{ item.dishFlavor }}</span>
+            <span >x{{item.num}}<br /></span>
+          </div>
+        </div>
       </div>
       <!-- <el-form ref="diaForm" :model="diaForm" class="dia-form">
         <el-form-item label="订单号">
@@ -201,6 +209,11 @@
              page: 1,
              pageSize: 10,
              tableData : [],
+             orderDetails:[{
+               name:'',//菜品名称
+               num:undefined,//数量
+               dishFlavor:''
+             }],
              dialogVisible: false,
              diaForm: {},
              loading: false
@@ -246,10 +259,10 @@
                     str =  '待付款'
                 break;
                 case 2:
-                    str =  '正在派送'
+                    str =  '待派送'
                 break;
                 case 3:
-                    str =  '已派送'
+                    str =  '正在派送'
                 break;
                 case 4:
                     str =  '已完成'
@@ -277,7 +290,15 @@
           goDetail (row) {
             this.diaForm = {}
             this.dialogVisible = true
+            this.getDetail(row)
             this.diaForm = { ...row }
+          },
+          getDetail(row){
+            queryOrderDetailById(row.id).then(res => {
+                      if (res.code === '200') {
+                        this.orderDetails = res.data
+                      }
+                    })
           },
           // 取消，派送，完成
           cancelOrDeliveryOrComplete (status, id) {
