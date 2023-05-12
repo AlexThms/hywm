@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-        <title>菩提阁</title>
+        <title></title>
         <link rel="icon" href="./../images/favico.ico">
         <!--不同屏幕尺寸根字体设置-->
         <script src="./../js/base.js"></script>
@@ -24,8 +24,8 @@
                     <i class="el-icon-arrow-left" @click="goBack"></i>菩提阁
                 </div>
             </div>
-            <div class="divContent" @click.capture="itemClick(item)">
-                <div class="divAddress">
+            <div class="divContent" >
+                <div class="divAddress" @click.capture="itemClick(item)">
                     <div @click="toAddressPage">                    
                         <div class="address">{{address.detail}}</div>
                         <div class="name">

@@ -38,7 +38,7 @@ public class UserController {
     public Result sendMsg(@RequestBody User user, HttpSession session) {
         String phone = user.getPhone();
         Integer code = ValidateCodeUtils.generateValidateCode(4);
-//        SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", phone, code.toString());
+        SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", phone, code.toString());
         log.info("验证码:{}",code);
         session.setAttribute(phone, code);
         return Result.success(WMContonst.SuccessEnum.Success_SEND);
